@@ -53,4 +53,10 @@ function run(): void {
   });
 }
 
-run();
+// Vercel requires this export
+export default app;
+
+// Only run the server if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  run();
+}
