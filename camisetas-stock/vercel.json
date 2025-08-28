@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "bash vercel-build.sh",
+  "buildCommand": "npm run build:ssr",
   "functions": {
     "api/index.ts": {
       "maxDuration": 30
