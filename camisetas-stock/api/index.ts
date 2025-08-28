@@ -1,5 +1,16 @@
-// Importa el servidor ya compilado por Angular SSR
-// Esto asegura que las rutas y paths internos (browserDistFolder, indexHtml) sean correctos en Vercel
-import app from '../dist/camisetas-stock/server/server.mjs';
+// Carga diferida del bundle SSR compilado para evitar problemas ESM/CJS en Vercel
+let cachedApp: any;
 
-export default app;
+async function getApp() {
+  if (!cachedApp) {
+    const mod = await import('../dist/camisetas-stock/server/server.mjs');
+    // El bundle exporta default app()
+    cachedApp = mod.default ?? mod.app ?? mod;
+  }
+  return cachedApp;
+}
+
+export default async function handler(req: any, res: any) {
+  const app = await getApp();
+  return app(req, res);
+}
